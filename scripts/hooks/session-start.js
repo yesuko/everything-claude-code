@@ -15,11 +15,13 @@ const {
   findFiles,
   ensureDir,
   readFile,
+  stripAnsi,
   log,
   output
 } = require('../lib/utils');
 const { getPackageManager, getSelectionPrompt } = require('../lib/package-manager');
 const { listAliases } = require('../lib/session-aliases');
+const { detectProjectType } = require('../lib/project-detect');
 
 async function main() {
   const sessionsDir = getSessionsDir();
@@ -38,7 +40,7 @@ async function main() {
     log(`[SessionStart] Latest: ${latest.path}`);
 
     // Read and inject the latest session content into Claude's context
-    const content = readFile(latest.path);
+    const content = stripAnsi(readFile(latest.path));
     if (content && !content.includes('[Session context goes here]')) {
       // Only inject if the session has actual content (not the blank template)
       output(`Previous session summary:\n${content}`);
@@ -69,6 +71,22 @@ async function main() {
   if (pm.source === 'default') {
     log('[SessionStart] No package manager preference found.');
     log(getSelectionPrompt());
+  }
+
+  // Detect project type and frameworks (#293)
+  const projectInfo = detectProjectType();
+  if (projectInfo.languages.length > 0 || projectInfo.frameworks.length > 0) {
+    const parts = [];
+    if (projectInfo.languages.length > 0) {
+      parts.push(`languages: ${projectInfo.languages.join(', ')}`);
+    }
+    if (projectInfo.frameworks.length > 0) {
+      parts.push(`frameworks: ${projectInfo.frameworks.join(', ')}`);
+    }
+    log(`[SessionStart] Project detected — ${parts.join('; ')}`);
+    output(`Project type: ${JSON.stringify(projectInfo)}`);
+  } else {
+    log('[SessionStart] No specific project type detected');
   }
 
   process.exit(0);

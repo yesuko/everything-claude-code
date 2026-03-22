@@ -976,11 +976,118 @@ function runTests() {
     assert.ok(result.output.includes('custom error'), 'Should include stderr output');
   })) passed++; else failed++;
 
-  if (test('runCommand falls back to err.message when no stderr', () => {
-    // An invalid command that won't produce stderr through child process
-    const result = utils.runCommand('nonexistent_cmd_xyz_12345');
+  if (test('runCommand returns error output on failed command', () => {
+    // Use an allowed prefix with a nonexistent subcommand to reach execSync
+    const result = utils.runCommand('git nonexistent-subcmd-xyz-12345');
     assert.strictEqual(result.success, false);
     assert.ok(result.output.length > 0, 'Should have some error output');
+  })) passed++; else failed++;
+
+  // ── runCommand security: allowlist and metacharacter blocking ──
+  console.log('\nrunCommand Security (allowlist + metacharacters):');
+
+  if (test('runCommand blocks disallowed command prefix', () => {
+    const result = utils.runCommand('rm -rf /');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('unrecognized command prefix'), 'Should mention blocked prefix');
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks curl command', () => {
+    const result = utils.runCommand('curl http://example.com');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('unrecognized command prefix'));
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks bash command', () => {
+    const result = utils.runCommand('bash -c "echo hello"');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('unrecognized command prefix'));
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks semicolon command chaining', () => {
+    const result = utils.runCommand('git status; echo pwned');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('metacharacters not allowed'), 'Should block semicolon chaining');
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks pipe command chaining', () => {
+    const result = utils.runCommand('git log | cat');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('metacharacters not allowed'), 'Should block pipe chaining');
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks ampersand command chaining', () => {
+    const result = utils.runCommand('git status && echo pwned');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('metacharacters not allowed'), 'Should block ampersand chaining');
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks dollar sign command substitution', () => {
+    const result = utils.runCommand('git log $(whoami)');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('metacharacters not allowed'), 'Should block $ substitution');
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks backtick command substitution', () => {
+    const result = utils.runCommand('git log `whoami`');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('metacharacters not allowed'), 'Should block backtick substitution');
+  })) passed++; else failed++;
+
+  if (test('runCommand allows metacharacters inside double quotes', () => {
+    // Semicolon inside quotes should not trigger metacharacter blocking
+    const result = utils.runCommand('node -e "console.log(1);process.exit(0)"');
+    assert.strictEqual(result.success, true);
+  })) passed++; else failed++;
+
+  if (test('runCommand allows metacharacters inside single quotes', () => {
+    const result = utils.runCommand("node -e 'process.exit(0);'");
+    assert.strictEqual(result.success, true);
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks unquoted metacharacters alongside quoted ones', () => {
+    // Semicolon inside quotes is safe, but && outside is not
+    const result = utils.runCommand('git log "safe;part" && echo pwned');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('metacharacters not allowed'));
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks prefix without trailing space', () => {
+    // "gitconfig" starts with "git" but not "git " — must be blocked
+    const result = utils.runCommand('gitconfig --list');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('unrecognized command prefix'));
+  })) passed++; else failed++;
+
+  if (test('runCommand allows npx prefix', () => {
+    const result = utils.runCommand('npx --version');
+    assert.strictEqual(result.success, true);
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks newline command injection', () => {
+    const result = utils.runCommand('git status\necho pwned');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('metacharacters not allowed'), 'Should block newline injection');
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks $() inside double quotes (shell still evaluates)', () => {
+    // $() inside double quotes is still evaluated by the shell, so block $ everywhere
+    const result = utils.runCommand('node -e "$(whoami)"');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('metacharacters not allowed'), 'Should block $ inside quotes');
+  })) passed++; else failed++;
+
+  if (test('runCommand blocks backtick inside double quotes (shell still evaluates)', () => {
+    const result = utils.runCommand('node -e "`whoami`"');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.output.includes('metacharacters not allowed'), 'Should block backtick inside quotes');
+  })) passed++; else failed++;
+
+  if (test('runCommand error message does not leak command string', () => {
+    const secret = 'rm secret_password_123';
+    const result = utils.runCommand(secret);
+    assert.strictEqual(result.success, false);
+    assert.ok(!result.output.includes('secret_password_123'), 'Should not leak command contents');
   })) passed++; else failed++;
 
   // ── Round 31: getGitModifiedFiles with empty patterns ──
@@ -2315,6 +2422,65 @@ function runTests() {
     } finally {
       console.log = origLog;
     }
+  })) passed++; else failed++;
+
+  // ─── stripAnsi ───
+  console.log('\nstripAnsi:');
+
+  if (test('strips SGR color codes (\\x1b[...m)', () => {
+    assert.strictEqual(utils.stripAnsi('\x1b[31mRed text\x1b[0m'), 'Red text');
+    assert.strictEqual(utils.stripAnsi('\x1b[1;36mBold cyan\x1b[0m'), 'Bold cyan');
+  })) passed++; else failed++;
+
+  if (test('strips cursor movement sequences (\\x1b[H, \\x1b[2J, \\x1b[3J)', () => {
+    // These are the exact sequences reported in issue #642
+    assert.strictEqual(utils.stripAnsi('\x1b[H\x1b[2J\x1b[3JHello'), 'Hello');
+    assert.strictEqual(utils.stripAnsi('before\x1b[Hafter'), 'beforeafter');
+  })) passed++; else failed++;
+
+  if (test('strips cursor position sequences (\\x1b[row;colH)', () => {
+    assert.strictEqual(utils.stripAnsi('\x1b[5;10Hplaced'), 'placed');
+  })) passed++; else failed++;
+
+  if (test('strips erase line sequences (\\x1b[K, \\x1b[2K)', () => {
+    assert.strictEqual(utils.stripAnsi('line\x1b[Kend'), 'lineend');
+    assert.strictEqual(utils.stripAnsi('line\x1b[2Kend'), 'lineend');
+  })) passed++; else failed++;
+
+  if (test('strips OSC sequences (window title, hyperlinks)', () => {
+    // OSC terminated by BEL (\x07)
+    assert.strictEqual(utils.stripAnsi('\x1b]0;My Title\x07content'), 'content');
+    // OSC terminated by ST (\x1b\\)
+    assert.strictEqual(utils.stripAnsi('\x1b]8;;https://example.com\x1b\\link\x1b]8;;\x1b\\'), 'link');
+  })) passed++; else failed++;
+
+  if (test('strips charset selection (\\x1b(B)', () => {
+    assert.strictEqual(utils.stripAnsi('\x1b(Bnormal'), 'normal');
+  })) passed++; else failed++;
+
+  if (test('strips bare ESC + letter (\\x1bM reverse index)', () => {
+    assert.strictEqual(utils.stripAnsi('line\x1bMup'), 'lineup');
+  })) passed++; else failed++;
+
+  if (test('handles mixed ANSI sequences in one string', () => {
+    const input = '\x1b[H\x1b[2J\x1b[1;36mSession\x1b[0m summary\x1b[K';
+    assert.strictEqual(utils.stripAnsi(input), 'Session summary');
+  })) passed++; else failed++;
+
+  if (test('returns empty string for non-string input', () => {
+    assert.strictEqual(utils.stripAnsi(null), '');
+    assert.strictEqual(utils.stripAnsi(undefined), '');
+    assert.strictEqual(utils.stripAnsi(42), '');
+  })) passed++; else failed++;
+
+  if (test('preserves string with no ANSI codes', () => {
+    assert.strictEqual(utils.stripAnsi('plain text'), 'plain text');
+    assert.strictEqual(utils.stripAnsi(''), '');
+  })) passed++; else failed++;
+
+  if (test('handles CSI with question mark parameter (DEC private modes)', () => {
+    // e.g. \x1b[?25h (show cursor), \x1b[?25l (hide cursor)
+    assert.strictEqual(utils.stripAnsi('\x1b[?25hvisible\x1b[?25l'), 'visible');
   })) passed++; else failed++;
 
   // Summary
