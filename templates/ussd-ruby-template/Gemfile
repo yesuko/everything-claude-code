@@ -1,0 +1,24 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+# Core USSD Dependencies (Redis Cache Only)
+gem 'sinatra', '2.2'
+gem 'redis', '~> 4.7', '>= 4.7.1'
+gem 'faraday'
+gem 'json'
+gem 'logger'
+
+# Standard Utilities (VPOS/Agropay)
+gem 'phonelib'
+gem 'will_paginate'
+gem 'concurrent-ruby', '= 1.3.3'
+gem 'ostruct'
+gem 'activesupport'
+
+group :development, :test do
+  gem 'rspec'
+  gem 'rack-test'
+  gem 'rubocop'
+  gem 'pry'
+end

@@ -11,7 +11,10 @@ const fs = require('fs');
 const path = require('path');
 
 const {
+  getClaudeDir,
   getSessionsDir,
+  getAntigravityBrainDir,
+  getAntigravityConversationsDir,
   readFile,
   log
 } = require('./utils');
@@ -207,52 +210,101 @@ function getAllSessions(options = {}) {
   const limit = Number.isNaN(limitNum) ? 50 : Math.max(1, Math.floor(limitNum));
 
   const sessionsDir = getSessionsDir();
-
-  if (!fs.existsSync(sessionsDir)) {
-    return { sessions: [], total: 0, offset, limit, hasMore: false };
-  }
-
-  const entries = fs.readdirSync(sessionsDir, { withFileTypes: true });
+  const brainDir = getAntigravityBrainDir();
   const sessions = [];
 
-  for (const entry of entries) {
-    // Skip non-files (only process .tmp files)
-    if (!entry.isFile() || !entry.name.endsWith('.tmp')) continue;
-
-    const filename = entry.name;
-    const metadata = parseSessionFilename(filename);
-
-    if (!metadata) continue;
-
-    // Apply date filter
-    if (date && metadata.date !== date) {
-      continue;
-    }
-
-    // Apply search filter (search in short ID)
-    if (search && !metadata.shortId.includes(search)) {
-      continue;
-    }
-
-    const sessionPath = path.join(sessionsDir, filename);
-
-    // Get file stats (wrapped in try-catch to handle TOCTOU race where
-    // file is deleted between readdirSync and statSync)
-    let stats;
+  // Antigravity title cache
+  const titlePath = path.join(getClaudeDir(), 'antigravity-titles.json');
+  let antTitles = {};
+  if (fs.existsSync(titlePath)) {
     try {
-      stats = fs.statSync(sessionPath);
+      antTitles = JSON.parse(fs.readFileSync(titlePath, 'utf8'));
     } catch {
-      continue; // File was deleted between readdir and stat
+      antTitles = {};
     }
+  }
 
-    sessions.push({
-      ...metadata,
-      sessionPath,
-      hasContent: stats.size > 0,
-      size: stats.size,
-      modifiedTime: stats.mtime,
-      createdTime: stats.birthtime || stats.ctime
-    });
+  // Standard Claude Sessions (.tmp files)
+  if (fs.existsSync(sessionsDir)) {
+    const entries = fs.readdirSync(sessionsDir, { withFileTypes: true });
+
+    for (const entry of entries) {
+      if (!entry.isFile() || !entry.name.endsWith('.tmp')) continue;
+
+      const filename = entry.name;
+      const metadata = parseSessionFilename(filename);
+
+      if (!metadata) continue;
+
+      // Apply date filter
+      if (date && metadata.date !== date) continue;
+
+      // Apply search filter (search in short ID)
+      if (search && !metadata.shortId.includes(search)) continue;
+
+      const sessionPath = path.join(sessionsDir, filename);
+
+      let stat;
+      try {
+        stat = fs.statSync(sessionPath);
+      } catch {
+        continue;
+      }
+
+      sessions.push({
+        ...metadata,
+        sessionPath,
+        type: 'claude',
+        hasContent: stat.size > 0,
+        size: stat.size,
+        modifiedTime: stat.mtime,
+        createdTime: stat.birthtime || stat.ctime
+      });
+    }
+  }
+
+  // Antigravity Brain Sessions (UUID directories)
+  if (fs.existsSync(brainDir)) {
+    const entries = fs.readdirSync(brainDir, { withFileTypes: true });
+
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+
+      const id = entry.name;
+      const shortId = id.slice(0, 8); // Same as Claude ID length
+
+      // Apply search filter
+      if (search && !shortId.includes(search)) continue;
+
+      const sessionPath = path.join(brainDir, id);
+
+      let stat;
+      try {
+        stat = fs.statSync(sessionPath);
+      } catch {
+        continue;
+      }
+
+      // Check if this ID already has a Claude session (avoid duplicates)
+      if (sessions.some(s => s.shortId === shortId)) continue;
+
+      const dateStr = stat.mtime.toISOString().slice(0, 10);
+      if (date && dateStr !== date) continue;
+
+      sessions.push({
+        filename: id,
+        shortId: shortId,
+        title: antTitles[shortId] || id,
+        date: dateStr,
+        datetime: stat.mtime,
+        sessionPath,
+        type: 'antigravity',
+        hasContent: false, // .pb files are handled differently
+        size: stat.size,
+        modifiedTime: stat.mtime,
+        createdTime: stat.birthtime || stat.ctime
+      });
+    }
   }
 
   // Sort by modified time (newest first)
@@ -278,54 +330,110 @@ function getAllSessions(options = {}) {
  */
 function getSessionById(sessionId, includeContent = false) {
   const sessionsDir = getSessionsDir();
+  const brainDir = getAntigravityBrainDir();
 
-  if (!fs.existsSync(sessionsDir)) {
-    return null;
+  // Try standard sessions first
+  if (fs.existsSync(sessionsDir)) {
+    const entries = fs.readdirSync(sessionsDir, { withFileTypes: true });
+
+    for (const entry of entries) {
+      if (!entry.isFile() || !entry.name.endsWith('.tmp')) continue;
+
+      const filename = entry.name;
+      const metadata = parseSessionFilename(filename);
+
+      if (!metadata) continue;
+
+      // Check if session ID matches (short ID or full filename without .tmp)
+      const shortIdMatch = sessionId.length > 0 && metadata.shortId !== 'no-id' && metadata.shortId.startsWith(sessionId);
+      const filenameMatch = filename === sessionId || filename === `${sessionId}.tmp`;
+      const noIdMatch = metadata.shortId === 'no-id' && filename === `${sessionId}-session.tmp`;
+
+      if (shortIdMatch || filenameMatch || noIdMatch) {
+        const sessionPath = path.join(sessionsDir, filename);
+        let stat;
+        try {
+          stat = fs.statSync(sessionPath);
+        } catch {
+          continue;
+        }
+
+        const session = {
+          ...metadata,
+          sessionPath,
+          type: 'claude',
+          size: stat.size,
+          modifiedTime: stat.mtime,
+          createdTime: stat.birthtime || stat.ctime
+        };
+
+        if (includeContent) {
+          session.content = getSessionContent(sessionPath);
+          session.metadata = parseSessionMetadata(session.content);
+          session.stats = getSessionStats(session.content || '');
+        }
+
+        return session;
+      }
+    }
   }
 
-  const entries = fs.readdirSync(sessionsDir, { withFileTypes: true });
+  // Try Antigravity brain
+  if (fs.existsSync(brainDir)) {
+    const entries = fs.readdirSync(brainDir, { withFileTypes: true });
 
-  for (const entry of entries) {
-    if (!entry.isFile() || !entry.name.endsWith('.tmp')) continue;
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
 
-    const filename = entry.name;
-    const metadata = parseSessionFilename(filename);
+      const id = entry.name;
+      const shortId = id.slice(0, 8);
 
-    if (!metadata) continue;
+      if (id === sessionId || shortId.startsWith(sessionId)) {
+        const sessionPath = path.join(brainDir, id);
+        let stat;
+        try {
+          stat = fs.statSync(sessionPath);
+        } catch {
+          continue;
+        }
 
-    // Check if session ID matches (short ID or full filename without .tmp)
-    const shortIdMatch = sessionId.length > 0 && metadata.shortId !== 'no-id' && metadata.shortId.startsWith(sessionId);
-    const filenameMatch = filename === sessionId || filename === `${sessionId}.tmp`;
-    const noIdMatch = metadata.shortId === 'no-id' && filename === `${sessionId}-session.tmp`;
+        // Load title from cache
+        let title = id;
+        try {
+          const titlePath = path.join(getClaudeDir(), 'antigravity-titles.json');
+          if (fs.existsSync(titlePath)) {
+            const antTitles = JSON.parse(fs.readFileSync(titlePath, 'utf8'));
+            title = antTitles[shortId] || id;
+          }
+        } catch { }
 
-    if (!shortIdMatch && !filenameMatch && !noIdMatch) {
-      continue;
+        const session = {
+          filename: id,
+          shortId,
+          title,
+          date: stat.mtime.toISOString().slice(0, 10),
+          sessionPath,
+          type: 'antigravity',
+          size: stat.size,
+          modifiedTime: stat.mtime,
+          createdTime: stat.birthtime || stat.ctime,
+          metadata: { title } // Basic metadata compatibility
+        };
+
+        if (includeContent) {
+          session.content = `---
+title: ${title}
+id: ${id}
+type: antigravity
+---
+
+This is an Antigravity Brain session. Raw logs are stored in binary .pb format in the conversations directory. Use standard Antigravity tools for deep inspection.`;
+          session.stats = { lineCount: 10, totalItems: 0, completedItems: 0, inProgressItems: 0 };
+        }
+
+        return session;
+      }
     }
-
-    const sessionPath = path.join(sessionsDir, filename);
-    let stats;
-    try {
-      stats = fs.statSync(sessionPath);
-    } catch {
-      return null; // File was deleted between readdir and stat
-    }
-
-    const session = {
-      ...metadata,
-      sessionPath,
-      size: stats.size,
-      modifiedTime: stats.mtime,
-      createdTime: stats.birthtime || stats.ctime
-    };
-
-    if (includeContent) {
-      session.content = getSessionContent(sessionPath);
-      session.metadata = parseSessionMetadata(session.content);
-      // Pass pre-read content to avoid a redundant disk read
-      session.stats = getSessionStats(session.content || '');
-    }
-
-    return session;
   }
 
   return null;

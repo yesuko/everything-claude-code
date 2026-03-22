@@ -6,6 +6,9 @@ Manage Claude Code session history - list, load, alias, and edit sessions stored
 
 `/sessions [list|load|alias|info|help] [options]`
 
+### 🔄 Automated Refresh
+Every time this command is called (either manually or via slash), the **Antigravity Title Cache** (`~/.claude/antigravity-titles.json`) MUST be updated from the current system conversation metadata before listing sessions.
+
 ## Actions
 
 ### List Sessions

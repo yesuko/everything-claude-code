@@ -42,6 +42,20 @@ function getLearnedSkillsDir() {
 }
 
 /**
+ * Get the Antigravity Brain directory
+ */
+function getAntigravityBrainDir() {
+  return path.join(getHomeDir(), '.gemini', 'antigravity', 'brain');
+}
+
+/**
+ * Get the Antigravity Conversations directory
+ */
+function getAntigravityConversationsDir() {
+  return path.join(getHomeDir(), '.gemini', 'antigravity', 'conversations');
+}
+
+/**
  * Get the temp directory (cross-platform)
  */
 function getTempDir() {
@@ -494,6 +508,8 @@ module.exports = {
   getClaudeDir,
   getSessionsDir,
   getLearnedSkillsDir,
+  getAntigravityBrainDir,
+  getAntigravityConversationsDir,
   getTempDir,
   ensureDir,
 

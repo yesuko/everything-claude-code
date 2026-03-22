@@ -1,0 +1,425 @@
+// ============================================================
+// AUTO_DEBIT DESIGN SYSTEM - SCSS VARIABLES
+// ============================================================
+// Last Updated: February 20, 2026
+// Framework: Angular 21 with SCSS
+// Units: rem (1rem = 16px base)
+// ============================================================
+
+// ==========================================================
+// BASE CONFIGURATION
+// ==========================================================
+$base-font-size: 16px; // Browser default
+// Conversion: divide px by 16 to get rem
+
+// ==========================================================
+// PRIMARY COLORS
+// ==========================================================
+$primary: #ad46ff; // Vibrant Purple - For primary actions and highlights
+$primary-50: #faf5ff; // Very light
+$primary-100: #f3e8ff; // Light
+$primary-200: #e9d4ff;
+$primary-300: #dab2ff;
+$primary-400: #c27aff;
+$primary-500: #ad46ff;
+$primary-600: #9810fa;
+$primary-700: #8200db;
+$primary-800: #6e11b0;
+$primary-900: #59168b;
+$primary-950: #3c0366; // Very dark
+
+$primary-light: #3b82f6; // Lighter Blue - For hover states
+$primary-lighter: #dbeafe; // Light Blue
+
+// ==========================================================
+// SEMANTIC COLORS - Status & Actions
+// ==========================================================
+
+// Success / Allow
+$success: #10b981; // Emerald - For "allow" decisions
+$success-50: #f0fdf4;
+$success-100: #dcfce7;
+$success-200: #bbf7d0;
+$success-300: #86efac;
+$success-400: #4ade80;
+$success-500: #22c55e;
+$success-600: #16a34a;
+$success-700: #15803d;
+$success-800: #166534;
+$success-900: #14532d;
+
+// Error / Deny
+$error: #ef4444; // Red - For "deny" decisions
+$error-50: #fef2f2;
+$error-100: #fee2e2;
+$error-200: #fecaca;
+$error-300: #fca5a5;
+$error-400: #f87171;
+$error-500: #ef4444;
+$error-600: #dc2626;
+$error-700: #b91c1c;
+$error-800: #991b1b;
+$error-900: #7f1d1d;
+
+// Warning / Review
+$warning: #f59e0b; // Amber - For "review" decisions
+$warning-50: #fffbeb;
+$warning-100: #fef3c7;
+$warning-200: #fde68a;
+$warning-300: #fcd34d;
+$warning-400: #fbbf24;
+$warning-500: #f59e0b;
+$warning-600: #d97706;
+$warning-700: #b45309;
+$warning-800: #92400e;
+$warning-900: #78350f;
+
+// Info / Draft
+$info: #0ea5e9; // Cyan - For informational items
+$info-50: #f0f9ff;
+$info-100: #e0f2fe;
+$info-200: #bae6fd;
+$info-300: #7dd3fc;
+$info-400: #38bdf8;
+$info-500: #0ea5e9;
+$info-600: #0284c7;
+$info-700: #0369a1;
+$info-800: #075985;
+$info-900: #0c4a6e;
+
+// Neutral / Slate
+$neutral: #64748b; // Slate - For neutral/inactive items
+$neutral-50: #f8fafc;
+$neutral-100: #f1f5f9;
+$neutral-200: #e2e8f0;
+$neutral-300: #cbd5e1;
+$neutral-400: #94a3b8;
+$neutral-500: #64748b;
+$neutral-600: #475569;
+$neutral-700: #334155;
+$neutral-800: #1e293b;
+$neutral-900: #0f172a;
+
+// ==========================================================
+// BACKGROUND & SURFACE COLORS
+// ==========================================================
+$bg-primary: #f8fafc; // Main background - off-white
+$bg-secondary: #f1f5f9; // Secondary background
+$bg-tertiary: #e2e8f0; // Tertiary background - for hover
+
+$surface: #ffffff; // Cards, panels, modals
+$surface-hover: #f8fafc; // Surface hover state
+
+// ==========================================================
+// TEXT COLORS
+// ==========================================================
+$text-primary: #0f172a; // Main text
+$text-secondary: #64748b; // Secondary text (labels, hints)
+$text-tertiary: #94a3b8; // Tertiary text (placeholders)
+$text-disabled: #cbd5e1; // Disabled text
+$text-inverse: #ffffff; // Text on dark backgrounds
+
+// ==========================================================
+// BORDER COLORS
+// ==========================================================
+$border-light: #e2e8f0; // Default borders
+$border-lighter: #f1f5f9; // Lighter borders
+$border-dark: #cbd5e1; // Darker borders
+$border-focus: $primary; // Focus state borders
+
+// ==========================================================
+// SHADOW COLORS (for depth)
+// ==========================================================
+$shadow-sm: rgba(0, 0, 0, 0.05);
+$shadow-md: rgba(0, 0, 0, 0.1);
+$shadow-lg: rgba(0, 0, 0, 0.15);
+$shadow-xl: rgba(0, 0, 0, 0.2);
+
+// ==========================================================
+// ALERT BOX BACKGROUNDS & BORDERS
+// ==========================================================
+
+// Success Alert
+$alert-success-bg: #ecfdf5;
+$alert-success-border: #86efac;
+$alert-success-text: #166534;
+
+// Error Alert
+$alert-error-bg: #fef2f2;
+$alert-error-border: #fca5a5;
+$alert-error-text: #991b1b;
+
+// Warning Alert
+$alert-warning-bg: #fffbeb;
+$alert-warning-border: #fde047;
+$alert-warning-text: #92400e;
+
+// Info Alert
+$alert-info-bg: #eff6ff;
+$alert-info-border: #bfdbfe;
+$alert-info-text: #1e40af;
+
+// ==========================================================
+// BADGE COLORS
+// ==========================================================
+
+// Status Badges
+$badge-success: $success;
+$badge-error: $error;
+$badge-warning: $warning;
+$badge-info: $info;
+$badge-neutral: $neutral;
+
+// Mandate / workflow status colors
+$status-draft: $neutral-500; // Draft — grey
+$status-validated: $info-600; // Validated — blue
+$status-approved: $primary-700; // Approved — purple
+$status-deployed: $success-600; // Deployed / active — green
+$status-archived: $neutral-400; // Archived — muted grey
+
+$badge-success-bg: $success-50;
+$badge-error-bg: $error-50;
+$badge-warning-bg: $warning-50;
+$badge-info-bg: $info-50;
+$badge-neutral-bg: $neutral-100;
+
+// ==========================================================
+// BUTTON COLORS
+// ==========================================================
+
+// Primary Button
+$btn-primary-bg: $primary;
+$btn-primary-text: white;
+$btn-primary-hover: $primary-800;
+$btn-primary-active: $primary-900;
+$btn-primary-disabled: $primary-300;
+
+// Secondary Button
+$btn-secondary-bg: $primary-lighter;
+$btn-secondary-text: $primary;
+$btn-secondary-hover: $primary-200;
+$btn-secondary-active: $primary-300;
+
+// Danger Button
+$btn-danger-bg: $error;
+$btn-danger-text: white;
+$btn-danger-hover: $error-700;
+$btn-danger-active: $error-800;
+
+// Success Button
+$btn-success-bg: $success;
+$btn-success-text: white;
+$btn-success-hover: $success-700;
+$btn-success-active: $success-800;
+
+// ==========================================================
+// INPUT & FORM COLORS
+// ==========================================================
+
+$input-bg: transparent;
+$input-border: $border-light;
+$input-border-focus: $primary;
+$input-text: $text-primary;
+$input-placeholder: $text-tertiary;
+$input-disabled-bg: $neutral-100;
+$input-disabled-text: $text-disabled;
+
+// ==========================================================
+// SPACING VARIABLES (rem units)
+// ==========================================================
+
+$spacing-xs: 0.25rem; // 4px
+$spacing-sm: 0.5rem; // 8px
+$spacing-md: 1rem; // 16px
+$spacing-lg: 1.5rem; // 24px
+$spacing-xl: 2rem; // 32px
+$spacing-2xl: 3rem; // 48px
+$spacing-3xl: 4rem; // 64px
+
+// ==========================================================
+// BORDER RADIUS (rem units)
+// ==========================================================
+
+$radius-sm: 0.25rem; // 4px
+$radius-md: 0.375rem; // 6px
+$radius-lg: 0.5rem; // 8px
+$radius-xl: 0.75rem; // 12px
+$radius-2xl: 1rem; // 16px
+$radius-full: 9999px;
+
+// ==========================================================
+// FONT FAMILY
+// ==========================================================
+
+$font-family:
+  'Outfit',
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  'Helvetica Neue',
+  sans-serif;
+$font-mono: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Courier New', monospace;
+
+// ==========================================================
+// FONT SIZES (rem units)
+// ==========================================================
+
+$font-size-xs: 0.75rem; // 12px
+$font-size-sm: 0.875rem; // 14px
+$font-size-md: 1rem; // 16px (base)
+$font-size-lg: 1.125rem; // 18px
+$font-size-xl: 1.25rem; // 20px
+$font-size-2xl: 1.5rem; // 24px
+$font-size-3xl: 1.875rem; // 30px
+$font-size-4xl: 2.25rem; // 36px
+
+// ==========================================================
+// FONT WEIGHTS
+// ==========================================================
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+
+// ==========================================================
+// LINE HEIGHTS
+// ==========================================================
+
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+$line-height-loose: 2;
+
+// ==========================================================
+// Z-INDEX SCALE
+// ==========================================================
+
+$z-dropdown: 100;
+$z-sticky: 200;
+$z-fixed: 300;
+$z-modal-backdrop: 400;
+$z-modal: 500;
+$z-notification: 600;
+$z-tooltip: 700;
+
+// ==========================================================
+// TRANSITIONS & ANIMATIONS
+// ==========================================================
+
+$transition-fast: 150ms ease-in-out;
+$transition-normal: 250ms ease-in-out;
+$transition-slow: 350ms ease-in-out;
+
+// ==========================================================
+// MEDIA QUERIES BREAKPOINTS (rem units)
+// ==========================================================
+
+$breakpoint-xs: 20rem; // 320px
+$breakpoint-sm: 30rem; // 480px
+$breakpoint-md: 48rem; // 768px
+$breakpoint-lg: 64rem; // 1024px
+$breakpoint-xl: 80rem; // 1280px
+$breakpoint-2xl: 96rem; // 1536px
+
+// ==========================================================
+// MIXINS - For Responsive Design
+// ==========================================================
+
+@mixin media-sm {
+  @media (max-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin media-md {
+  @media (max-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin media-lg {
+  @media (max-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin media-xl {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+// ==========================================================
+// MIXINS - Common Patterns
+// ==========================================================
+
+// Flexbox center
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flex between
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Absolute center
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// Truncate text
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Line clamp (multiline truncate)
+@mixin line-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Box shadow
+@mixin shadow-sm {
+  box-shadow: 0 0.0625rem 0.125rem 0 $shadow-sm;
+}
+
+@mixin shadow-md {
+  box-shadow: 0 0.25rem 0.375rem -0.0625rem $shadow-md;
+}
+
+@mixin shadow-lg {
+  box-shadow: 0 0.625rem 0.9375rem -0.1875rem $shadow-lg;
+}
+
+@mixin shadow-xl {
+  box-shadow: 0 1.25rem 1.5625rem -0.3125rem $shadow-xl;
+}
+
+// Transition
+@mixin transition {
+  transition: all $transition-normal;
+}
+
+// Focus ring
+@mixin focus-ring {
+  outline: none;
+  box-shadow:
+    0 0 0 0.1875rem rgba($primary, 0.1),
+    0 0 0 0.25rem $primary;
+}

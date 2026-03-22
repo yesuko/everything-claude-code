@@ -1,0 +1,26 @@
+{
+  "skill_name": "apps-n-mobile-developer",
+  "evals": [
+    {
+      "id": 0,
+      "name": "refactor-long-elixir-function",
+      "prompt": "Refactor this Elixir function that is currently 60 lines long. It parses a CSV file and updates the database with user info. Make sure it follows the Apps-N-Mobile standard: each function under 30 lines, logic decomposed into private helper functions, uses the standardized response envelope, and uses Repo.insert_all for the database update.",
+      "expected_output": "The output should be a decomposed Elixir module where no single function exceeds 30 lines. It must use the {error, resp_code, resp_desc, data} response envelope and Repo.insert_all.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "ruby-sinatra-payment-service",
+      "prompt": "Create a new Ruby service for a Sinatra application that processes a payment update. The service should: 1. Validate the incoming request against an ip_whitelist. 2. Record any row-level errors in a dedicated database log. 3. Return the standard Apps-N-Mobile response envelope with code 000 on success. 4. Use descriptive logging with the [PaymentService] tag.",
+      "expected_output": "Ruby code for a Sinatra service that includes IP whitelisting logic, error logging to a database table, and the standardized response envelope with the correct success code (000).",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "session-insights-trigger",
+      "prompt": "We have just finished refactoring the Authentication module. What did we learn this session? Give me the session insights report.",
+      "expected_output": "A report that exactly follows the SESSION INSIGHTS REPORT template defined in the skill, including sections for New Patterns, Decisions Made, Repeated Fixes, and Suggested Instruction Updates.",
+      "files": []
+    }
+  ]
+}

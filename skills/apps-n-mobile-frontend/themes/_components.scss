@@ -1,0 +1,603 @@
+// ============================================================
+// AUTO_DEBIT DESIGN SYSTEM - SCSS COMPONENTS
+// ============================================================
+// Last Updated: February 20, 2026
+// Framework: Angular 21 with SCSS
+// Units: rem (1rem = 16px base)
+
+@use 'variables' as *;
+
+// ==========================================================
+// CARDS
+// ==========================================================
+
+.card {
+  background-color: $surface;
+  border: 1px solid $border-light;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  @include shadow-md;
+  @include transition;
+
+  &:hover {
+    @include shadow-lg;
+    border-color: $border-dark;
+  }
+
+  &__header {
+    padding-bottom: $spacing-md;
+    margin-bottom: $spacing-md;
+    border-bottom: 1px solid $border-light;
+  }
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    margin: 0;
+  }
+
+  &__body {
+    padding: $spacing-md 0;
+  }
+
+  &__footer {
+    padding-top: $spacing-md;
+    margin-top: $spacing-md;
+    border-top: 1px solid $border-light;
+    @include flex-between;
+  }
+}
+
+// ==========================================================
+// BUTTONS
+// ==========================================================
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  border: none;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  font-family: $font-family;
+  cursor: pointer;
+  @include transition;
+  white-space: nowrap;
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  // Primary button
+  &--primary {
+    background-color: $btn-primary-bg;
+    color: $btn-primary-text;
+
+    &:hover:not(:disabled) {
+      background-color: $btn-primary-hover;
+    }
+
+    &:active:not(:disabled) {
+      background-color: $btn-primary-active;
+    }
+  }
+
+  // Secondary button
+  &--secondary {
+    background-color: $btn-secondary-bg;
+    color: $btn-secondary-text;
+
+    &:hover:not(:disabled) {
+      background-color: $btn-secondary-hover;
+    }
+
+    &:active:not(:disabled) {
+      background-color: $btn-secondary-active;
+    }
+  }
+
+  // Danger button
+  &--danger {
+    background-color: $btn-danger-bg;
+    color: $btn-danger-text;
+
+    &:hover:not(:disabled) {
+      background-color: $btn-danger-hover;
+    }
+
+    &:active:not(:disabled) {
+      background-color: $btn-danger-active;
+    }
+  }
+
+  // Success button
+  &--success {
+    background-color: $btn-success-bg;
+    color: $btn-success-text;
+
+    &:hover:not(:disabled) {
+      background-color: $btn-success-hover;
+    }
+
+    &:active:not(:disabled) {
+      background-color: $btn-success-active;
+    }
+  }
+
+  // Outline button
+  &--outline {
+    background-color: transparent;
+    color: $primary;
+    border: 1px solid $primary;
+
+    &:hover:not(:disabled) {
+      background-color: $primary-lighter;
+    }
+  }
+
+  // Ghost button
+  &--ghost {
+    background-color: transparent;
+    color: $text-primary;
+
+    &:hover:not(:disabled) {
+      background-color: $bg-tertiary;
+    }
+  }
+
+  // Button sizes
+  &--sm {
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-sm;
+  }
+
+  &--lg {
+    padding: $spacing-md $spacing-lg;
+    font-size: $font-size-lg;
+  }
+
+  &--icon {
+    padding: $spacing-sm;
+    aspect-ratio: 1;
+  }
+}
+
+// ==========================================================
+// BADGES
+// ==========================================================
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+
+  &--success {
+    background-color: $badge-success-bg;
+    color: $success;
+  }
+
+  &--error {
+    background-color: $badge-error-bg;
+    color: $error;
+  }
+
+  &--warning {
+    background-color: $badge-warning-bg;
+    color: $warning;
+  }
+
+  &--info {
+    background-color: $badge-info-bg;
+    color: $info;
+  }
+
+  &--neutral {
+    background-color: $badge-neutral-bg;
+    color: $neutral;
+  }
+
+  // Status badges
+  &--draft {
+    background-color: $neutral-100;
+    color: $status-draft;
+  }
+
+  &--validated {
+    background-color: $primary-lighter;
+    color: $status-validated;
+  }
+
+  &--approved {
+    background-color: #f3e8ff;
+    color: $status-approved;
+  }
+
+  &--deployed {
+    background-color: $success-50;
+    color: $status-deployed;
+  }
+
+  &--archived {
+    background-color: $neutral-100;
+    color: $status-archived;
+  }
+}
+
+// ==========================================================
+// ALERTS
+// ==========================================================
+
+.alert {
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  border-left-width: 0.25rem;
+  border-left-style: solid;
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+
+  &__icon {
+    flex-shrink: 0;
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &__title {
+    font-weight: $font-weight-semibold;
+    margin: 0 0 $spacing-xs 0;
+  }
+
+  &__message {
+    margin: 0;
+    font-size: $font-size-sm;
+  }
+
+  &--success {
+    background-color: $alert-success-bg;
+    border-left-color: $alert-success-border;
+    color: $alert-success-text;
+  }
+
+  &--error {
+    background-color: $alert-error-bg;
+    border-left-color: $alert-error-border;
+    color: $alert-error-text;
+  }
+
+  &--warning {
+    background-color: $alert-warning-bg;
+    border-left-color: $alert-warning-border;
+    color: $alert-warning-text;
+  }
+
+  &--info {
+    background-color: $alert-info-bg;
+    border-left-color: $alert-info-border;
+    color: $alert-info-text;
+  }
+}
+
+// ==========================================================
+// INPUTS
+// ==========================================================
+
+.input {
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  font-size: $font-size-md;
+  font-family: $font-family;
+  color: $input-text;
+  background-color: $input-bg;
+  border: 1px solid $input-border;
+  border-radius: $radius-md;
+  @include transition;
+
+  &::placeholder {
+    color: $input-placeholder;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $input-border-focus;
+    @include focus-ring;
+  }
+
+  &:disabled {
+    background-color: $input-disabled-bg;
+    color: $input-disabled-text;
+    cursor: not-allowed;
+  }
+
+  &--error {
+    border-color: $error;
+
+    &:focus {
+      box-shadow:
+        0 0 0 0.1875rem rgba($error, 0.1),
+        0 0 0 0.25rem $error;
+    }
+  }
+
+  &--sm {
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-sm;
+  }
+
+  &--lg {
+    padding: $spacing-md $spacing-lg;
+    font-size: $font-size-lg;
+  }
+}
+
+.textarea {
+  @extend .input;
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.select {
+  @extend .input;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $spacing-sm center;
+  background-size: 1.25rem;
+  padding-right: $spacing-xl;
+}
+
+.form-group {
+  margin-bottom: $spacing-md;
+
+  &__label {
+    display: block;
+    margin-bottom: $spacing-xs;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $text-primary;
+  }
+
+  &__hint {
+    display: block;
+    margin-top: $spacing-xs;
+    font-size: $font-size-xs;
+    color: $text-secondary;
+  }
+
+  &__error {
+    display: block;
+    margin-top: $spacing-xs;
+    font-size: $font-size-xs;
+    color: $error;
+  }
+}
+
+// ==========================================================
+// TABLES
+// ==========================================================
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $surface;
+  border-radius: $radius-lg;
+  overflow: hidden;
+
+  &__header {
+    background-color: $bg-secondary;
+  }
+
+  &__row {
+    border-bottom: 1px solid $border-light;
+    @include transition;
+
+    &:hover {
+      background-color: $surface-hover;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__head {
+    padding: $spacing-sm $spacing-md;
+    text-align: left;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  &__cell {
+    padding: $spacing-md;
+    font-size: $font-size-sm;
+    color: $text-primary;
+  }
+}
+
+// ==========================================================
+// MODALS
+// ==========================================================
+
+.modal {
+  &__backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: $z-modal-backdrop;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-md;
+  }
+
+  &__content {
+    background-color: $surface;
+    border-radius: $radius-lg;
+    @include shadow-xl;
+    max-width: 32rem;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: $z-modal;
+  }
+
+  &__header {
+    padding: $spacing-lg;
+    border-bottom: 1px solid $border-light;
+    @include flex-between;
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    margin: 0;
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $text-secondary;
+    padding: $spacing-xs;
+    @include transition;
+
+    &:hover {
+      color: $text-primary;
+    }
+  }
+
+  &__body {
+    padding: $spacing-lg;
+  }
+
+  &__footer {
+    padding: $spacing-lg;
+    border-top: 1px solid $border-light;
+    @include flex-between;
+  }
+}
+
+// ==========================================================
+// TOOLTIPS
+// ==========================================================
+
+.tooltip {
+  position: absolute;
+  z-index: $z-tooltip;
+  padding: $spacing-xs $spacing-sm;
+  background-color: $neutral-900;
+  color: $text-inverse;
+  font-size: $font-size-xs;
+  border-radius: $radius-sm;
+  white-space: nowrap;
+  @include shadow-md;
+  pointer-events: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    border: 0.25rem solid transparent;
+  }
+
+  &--top::before {
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: $neutral-900;
+  }
+
+  &--bottom::before {
+    top: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: $neutral-900;
+  }
+
+  &--left::before {
+    right: -0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left-color: $neutral-900;
+  }
+
+  &--right::before {
+    left: -0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border-right-color: $neutral-900;
+  }
+}
+
+// ==========================================================
+// LOADING SPINNER
+// ==========================================================
+
+.spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 0.125rem solid $border-light;
+  border-top-color: $primary;
+  border-radius: $radius-full;
+  animation: spin 0.6s linear infinite;
+
+  &--sm {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &--lg {
+    width: 2rem;
+    height: 2rem;
+    border-width: 0.1875rem;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ==========================================================
+// DIVIDER
+// ==========================================================
+
+.divider {
+  height: 1px;
+  background-color: $border-light;
+  border: none;
+  margin: $spacing-md 0;
+
+  &--vertical {
+    width: 1px;
+    height: auto;
+    margin: 0 $spacing-md;
+  }
+}

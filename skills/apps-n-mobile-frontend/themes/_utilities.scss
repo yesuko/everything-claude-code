@@ -1,0 +1,649 @@
+// ============================================================
+// AUTO_DEBIT DESIGN SYSTEM - SCSS UTILITIES
+// ============================================================
+// Last Updated: February 20, 2026
+// Framework: Angular 21 with SCSS
+// Units: rem (1rem = 16px base)
+
+@use 'variables' as *;
+
+// ==========================================================
+// SPACING UTILITIES
+// ==========================================================
+
+// Margin utilities
+.m-0 {
+  margin: 0;
+}
+.m-xs {
+  margin: $spacing-xs;
+}
+.m-sm {
+  margin: $spacing-sm;
+}
+.m-md {
+  margin: $spacing-md;
+}
+.m-lg {
+  margin: $spacing-lg;
+}
+.m-xl {
+  margin: $spacing-xl;
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+.mt-xs {
+  margin-top: $spacing-xs;
+}
+.mt-sm {
+  margin-top: $spacing-sm;
+}
+.mt-md {
+  margin-top: $spacing-md;
+}
+.mt-lg {
+  margin-top: $spacing-lg;
+}
+.mt-xl {
+  margin-top: $spacing-xl;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+.mb-xs {
+  margin-bottom: $spacing-xs;
+}
+.mb-sm {
+  margin-bottom: $spacing-sm;
+}
+.mb-md {
+  margin-bottom: $spacing-md;
+}
+.mb-lg {
+  margin-bottom: $spacing-lg;
+}
+.mb-xl {
+  margin-bottom: $spacing-xl;
+}
+
+.ml-0 {
+  margin-left: 0;
+}
+.ml-xs {
+  margin-left: $spacing-xs;
+}
+.ml-sm {
+  margin-left: $spacing-sm;
+}
+.ml-md {
+  margin-left: $spacing-md;
+}
+.ml-lg {
+  margin-left: $spacing-lg;
+}
+.ml-xl {
+  margin-left: $spacing-xl;
+}
+
+.mr-0 {
+  margin-right: 0;
+}
+.mr-xs {
+  margin-right: $spacing-xs;
+}
+.mr-sm {
+  margin-right: $spacing-sm;
+}
+.mr-md {
+  margin-right: $spacing-md;
+}
+.mr-lg {
+  margin-right: $spacing-lg;
+}
+.mr-xl {
+  margin-right: $spacing-xl;
+}
+
+// Padding utilities
+.p-0 {
+  padding: 0;
+}
+.p-xs {
+  padding: $spacing-xs;
+}
+.p-sm {
+  padding: $spacing-sm;
+}
+.p-md {
+  padding: $spacing-md;
+}
+.p-lg {
+  padding: $spacing-lg;
+}
+.p-xl {
+  padding: $spacing-xl;
+}
+
+.pt-0 {
+  padding-top: 0;
+}
+.pt-xs {
+  padding-top: $spacing-xs;
+}
+.pt-sm {
+  padding-top: $spacing-sm;
+}
+.pt-md {
+  padding-top: $spacing-md;
+}
+.pt-lg {
+  padding-top: $spacing-lg;
+}
+.pt-xl {
+  padding-top: $spacing-xl;
+}
+
+.pb-0 {
+  padding-bottom: 0;
+}
+.pb-xs {
+  padding-bottom: $spacing-xs;
+}
+.pb-sm {
+  padding-bottom: $spacing-sm;
+}
+.pb-md {
+  padding-bottom: $spacing-md;
+}
+.pb-lg {
+  padding-bottom: $spacing-lg;
+}
+.pb-xl {
+  padding-bottom: $spacing-xl;
+}
+
+.pl-0 {
+  padding-left: 0;
+}
+.pl-xs {
+  padding-left: $spacing-xs;
+}
+.pl-sm {
+  padding-left: $spacing-sm;
+}
+.pl-md {
+  padding-left: $spacing-md;
+}
+.pl-lg {
+  padding-left: $spacing-lg;
+}
+.pl-xl {
+  padding-left: $spacing-xl;
+}
+
+.pr-0 {
+  padding-right: 0;
+}
+.pr-xs {
+  padding-right: $spacing-xs;
+}
+.pr-sm {
+  padding-right: $spacing-sm;
+}
+.pr-md {
+  padding-right: $spacing-md;
+}
+.pr-lg {
+  padding-right: $spacing-lg;
+}
+.pr-xl {
+  padding-right: $spacing-xl;
+}
+
+// ==========================================================
+// TEXT UTILITIES
+// ==========================================================
+
+// Text colors
+.text-primary {
+  color: $text-primary;
+}
+.text-secondary {
+  color: $text-secondary;
+}
+.text-tertiary {
+  color: $text-tertiary;
+}
+.text-disabled {
+  color: $text-disabled;
+}
+.text-inverse {
+  color: $text-inverse;
+}
+
+.text-success {
+  color: $success;
+}
+.text-error {
+  color: $error;
+}
+.text-warning {
+  color: $warning;
+}
+.text-info {
+  color: $info;
+}
+
+// Font sizes
+.text-xs {
+  font-size: $font-size-xs;
+}
+.text-sm {
+  font-size: $font-size-sm;
+}
+.text-md {
+  font-size: $font-size-md;
+}
+.text-lg {
+  font-size: $font-size-lg;
+}
+.text-xl {
+  font-size: $font-size-xl;
+}
+.text-2xl {
+  font-size: $font-size-2xl;
+}
+.text-3xl {
+  font-size: $font-size-3xl;
+}
+.text-4xl {
+  font-size: $font-size-4xl;
+}
+
+// Font weights
+.font-light {
+  font-weight: $font-weight-light;
+}
+.font-normal {
+  font-weight: $font-weight-normal;
+}
+.font-medium {
+  font-weight: $font-weight-medium;
+}
+.font-semibold {
+  font-weight: $font-weight-semibold;
+}
+.font-bold {
+  font-weight: $font-weight-bold;
+}
+.font-extrabold {
+  font-weight: $font-weight-extrabold;
+}
+
+// Text alignment
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+
+// Text transform
+.uppercase {
+  text-transform: uppercase;
+}
+.lowercase {
+  text-transform: lowercase;
+}
+.capitalize {
+  text-transform: capitalize;
+}
+
+// Text utilities
+.truncate {
+  @include truncate;
+}
+.line-clamp-2 {
+  @include line-clamp(2);
+}
+.line-clamp-3 {
+  @include line-clamp(3);
+}
+
+// ==========================================================
+// LAYOUT UTILITIES
+// ==========================================================
+
+// Flexbox
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-center {
+  @include flex-center;
+}
+.flex-between {
+  @include flex-between;
+}
+.flex-start {
+  justify-content: flex-start;
+}
+.flex-end {
+  justify-content: flex-end;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+.items-center {
+  align-items: center;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-stretch {
+  align-items: stretch;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.justify-around {
+  justify-content: space-around;
+}
+
+// Gap
+.gap-xs {
+  gap: $spacing-xs;
+}
+.gap-sm {
+  gap: $spacing-sm;
+}
+.gap-md {
+  gap: $spacing-md;
+}
+.gap-lg {
+  gap: $spacing-lg;
+}
+.gap-xl {
+  gap: $spacing-xl;
+}
+
+// Grid
+.grid {
+  display: grid;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+// Display
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.inline {
+  display: inline;
+}
+.hidden {
+  display: none;
+}
+
+// ==========================================================
+// BACKGROUND UTILITIES
+// ==========================================================
+
+.bg-primary {
+  background-color: $bg-primary;
+}
+.bg-secondary {
+  background-color: $bg-secondary;
+}
+.bg-tertiary {
+  background-color: $bg-tertiary;
+}
+.bg-surface {
+  background-color: $surface;
+}
+
+.bg-success {
+  background-color: $success-50;
+}
+.bg-error {
+  background-color: $error-50;
+}
+.bg-warning {
+  background-color: $warning-50;
+}
+.bg-info {
+  background-color: $info-50;
+}
+
+// ==========================================================
+// BORDER UTILITIES
+// ==========================================================
+
+.border {
+  border: 1px solid $border-light;
+}
+.border-0 {
+  border: 0;
+}
+.border-t {
+  border-top: 1px solid $border-light;
+}
+.border-b {
+  border-bottom: 1px solid $border-light;
+}
+.border-l {
+  border-left: 1px solid $border-light;
+}
+.border-r {
+  border-right: 1px solid $border-light;
+}
+
+.border-light {
+  border-color: $border-light;
+}
+.border-dark {
+  border-color: $border-dark;
+}
+
+// Border radius
+.rounded-none {
+  border-radius: 0;
+}
+.rounded-sm {
+  border-radius: $radius-sm;
+}
+.rounded-md {
+  border-radius: $radius-md;
+}
+.rounded-lg {
+  border-radius: $radius-lg;
+}
+.rounded-xl {
+  border-radius: $radius-xl;
+}
+.rounded-2xl {
+  border-radius: $radius-2xl;
+}
+.rounded-full {
+  border-radius: $radius-full;
+}
+
+// ==========================================================
+// SHADOW UTILITIES
+// ==========================================================
+
+.shadow-none {
+  box-shadow: none;
+}
+.shadow-sm {
+  @include shadow-sm;
+}
+.shadow-md {
+  @include shadow-md;
+}
+.shadow-lg {
+  @include shadow-lg;
+}
+.shadow-xl {
+  @include shadow-xl;
+}
+
+// ==========================================================
+// POSITIONING UTILITIES
+// ==========================================================
+
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.fixed {
+  position: fixed;
+}
+.sticky {
+  position: sticky;
+}
+
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+// ==========================================================
+// WIDTH & HEIGHT UTILITIES
+// ==========================================================
+
+.w-full {
+  width: 100%;
+}
+.w-auto {
+  width: auto;
+}
+.h-full {
+  height: 100%;
+}
+.h-auto {
+  height: auto;
+}
+
+// ==========================================================
+// OVERFLOW UTILITIES
+// ==========================================================
+
+.overflow-auto {
+  overflow: auto;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-visible {
+  overflow: visible;
+}
+.overflow-scroll {
+  overflow: scroll;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+// ==========================================================
+// CURSOR UTILITIES
+// ==========================================================
+
+.cursor-pointer {
+  cursor: pointer;
+}
+.cursor-default {
+  cursor: default;
+}
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+// ==========================================================
+// TRANSITION UTILITIES
+// ==========================================================
+
+.transition-fast {
+  transition: all $transition-fast;
+}
+.transition-normal {
+  transition: all $transition-normal;
+}
+.transition-slow {
+  transition: all $transition-slow;
+}
+
+// ==========================================================
+// Z-INDEX UTILITIES
+// ==========================================================
+
+.z-dropdown {
+  z-index: $z-dropdown;
+}
+.z-sticky {
+  z-index: $z-sticky;
+}
+.z-fixed {
+  z-index: $z-fixed;
+}
+.z-modal-backdrop {
+  z-index: $z-modal-backdrop;
+}
+.z-modal {
+  z-index: $z-modal;
+}
+.z-notification {
+  z-index: $z-notification;
+}
+.z-tooltip {
+  z-index: $z-tooltip;
+}
